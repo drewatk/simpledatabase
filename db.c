@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <unistd.h>
 
 struct InputBuffer_t {
     char * buffer;
@@ -33,8 +34,8 @@ const uint32_t COLUMN_USERNAME_SIZE = 32;
 const uint32_t COLUMN_EMAIL_SIZE = 255;
 struct Row_t {
     uint32_t id;
-    char username[COLUMN_USERNAME_SIZE];
-    char email[COLUMN_EMAIL_SIZE];
+    char username[COLUMN_USERNAME_SIZE + 1]; // Adding one for null byte
+    char email[COLUMN_EMAIL_SIZE + 1]; // Adding one for null byte
 };
 typedef struct Row_t Row;
 
@@ -109,7 +110,11 @@ InputBuffer* new_input_buffer() {
     return input_buffer;
 }
 
-void print_prompt() { printf("db > "); }
+void print_prompt() { 
+    if(isatty(1)) {
+        printf("db > "); 
+    }
+}
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
