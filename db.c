@@ -263,6 +263,7 @@ void db_close(Table* table) {
     if (pager->pages[page_num] != NULL) {
       pager_flush(pager, page_num, num_additional_rows * ROW_SIZE);
       free(pager->pages[page_num]);
+      pager->pages[page_num] = NULL;
     }
   }
 
